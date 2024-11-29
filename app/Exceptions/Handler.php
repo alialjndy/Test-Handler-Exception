@@ -2,10 +2,11 @@
 
 namespace App\Exceptions;
 
-use Dotenv\Exception\ValidationException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -85,7 +86,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'status'=>'error',
                 'message'=>'validation failed',
-                'errors'=> $e->getMessage(),
+                'errors'=> $e->validator->errors()->toArray(),
             ],422);
         }
             return response()->json([
